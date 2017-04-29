@@ -356,7 +356,23 @@ void cycle(state *s){
 
 int main(int argc, char *argv[]){
 	
+	//leitura do tamanho , associatividade e bloco
+	printf("Inserir tamanho: \n");
+	scanf("%d" &tam);
+	printf("Inserir associatividade: \n");
+	scanf("%d" &asso);
+	printf("Inserir bloco: \n");
+	scanf("%d" &bloco);
+	
 	// verificar se as variavis sao potencia de 2
+	int verificaTam = tam && !(tam & (tam - 1));
+	int verificaAsso = asso && !(asso & (asso - 1));
+	int verificaBloco = bloco && !(bloco & (bloco - 1));
+	
+	if(verificaTam != 1 || verificaAsso !=1 || verificaBloco !=1){
+		printf("\Erro, tamanho ou associatividade ou bloco nao é potencia de 2\n");
+		return 1;
+	}
 	
 	if(tam != asso*bloco){
 		printf("\Erro, tam != asso*bloco\n");
