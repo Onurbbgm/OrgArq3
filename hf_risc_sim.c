@@ -46,7 +46,7 @@ int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
 int * cache[];
-int * tag[]*;
+int * tag[];
 
 int acessosL1 = 0;
 int falhasL1 = 0;
