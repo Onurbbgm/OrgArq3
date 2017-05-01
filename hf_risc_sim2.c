@@ -59,8 +59,8 @@ static int cache_read(int tag, int linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
-	if(*(tagV + linha) == tag){
-			return *(tagV + linha);
+	if(tagV[linha % tam] == tag){
+			return tagV[linha % tam];
 	}
 	ciclos = ciclos + penal;
 	falhasL1++;
@@ -70,8 +70,8 @@ static int cache_read(int tag, int linha){
 static void cache_write(int tag, int linha, int data){
 	ciclos++;
 	acessosL1++;
-	cache[linha] = data;
-	tagV[linha] = tag;
+	cache[linha % tam] = data;
+	tagV[linha % tam] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
@@ -434,10 +434,10 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 	
-	int cacheAux[tam];
-	int tagAux[tam];
-	cache = cacheAux;
-	tagV = tagAux;
+	//int cacheAux[tam];
+	//int tagAux[tam];
+	cache = (int *)malloc(tam * sizeof(int));
+	tagV = (int *)malloc(tam * sizeof(int));
 
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
