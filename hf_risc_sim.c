@@ -47,6 +47,7 @@ int penal, tam, asso, bloco; // parametro
 int8_t sram[MEM_SIZE];
 int *cache;
 int *tagV;
+int *penal;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -56,6 +57,8 @@ FILE *fptr;
 int32_t log_enabled = 0;
 
 static int cache_read(int tag, int linha){
+	ciclos++;
+	acessosL1++;
 	int i = 0;
 	for(i = 0; i<asso; i++){
 		if(tagV[(linha*asso)+i] == tag)
@@ -392,7 +395,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 	
-	int penal = atoi(argv[1]);
+	penal = malloc(sizeof(int));
+	penal = atoi(argv[1]);
 	int tam = atoi(argv[2]);
 	int asso = atoi(argv[3]);
 	int bloco = atoi(argv[4]);
