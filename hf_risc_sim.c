@@ -45,8 +45,8 @@ typedef struct {
 int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
-int * cache[];
-int * tag[];
+int * cache;
+int * tagV;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -56,8 +56,9 @@ FILE *fptr;
 int32_t log_enabled = 0;
 
 static int cache_read(int tag, int linha){
-	for(int i = 0; i<asso; i++){
-		if(tag[(linha*asso)+i] == tag)
+	int i = 0;
+	for(i = 0; i<asso; i++){
+		if(tagV[(linha*asso)+i] == tag)
 			return (linha*asso)+1;
 	}
 	return -1;
@@ -65,7 +66,7 @@ static int cache_read(int tag, int linha){
 
 static void cache_write(int tag, int linha, int coluna, int data){
 	cache[(linha*asso)+coluna] = data;
-	tag[(linha*asso)+coluna] = tag;
+	tagV[(linha*asso)+coluna] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
@@ -382,10 +383,12 @@ int main(int argc, char *argv[]){
 		printf("\Erro, tam != asso*bloco\n");
 		return 1;
 	}
-	int cacheAux[tam];
-	int TagAux[tam];
-	cache = &cacheAux;
-	tag = &tagAux;
+
+	cache = malloc(tam * sizeof(int));
+	tag = malloc(tam * sizeof(int));
+	
+	//memset(cache,0,tam*sizeof(int));
+	//memset(tagV,0,tam*sizeof(int));
 	
 	state context;
 	state *s;
