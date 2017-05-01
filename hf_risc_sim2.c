@@ -434,8 +434,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	cacheAux[tam] = {0};
-	tagAux[tam] = {0};
+	int cacheAux[tam];
+	int tagAux[tam];
 	memset(cacheAux, 0xff, sizeof(int)*tam);
 	memset(tagAux, 0xff, sizeof(int)*tam);
 	cache = cacheAux;
