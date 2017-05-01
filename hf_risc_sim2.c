@@ -444,14 +444,14 @@ int main(int argc, char *argv[]){
 	//tagV = (int *)malloc(tam * sizeof(int));
 
 	if (cache != 0) {
-    		cache = (int*) realloc(cache, tam * sizeof(int));
+    		cache = (int*) realloc(cache, sizeof(tam) * sizeof(int));
 	} else {
-    		cache = (int*) malloc(tam * sizeof(int));
+    		cache = (int*) malloc(sizeof(tam) * sizeof(int));
 	}
 	if (tagV != 0) {
-    		tagV = (int*) realloc(tagV, sizeof(tam));
+    		tagV = (int*) realloc(tagV, sizeof(tam) * sizeof(int));
 	} else {
-    		tagV = (int*) malloc(sizeof(tam));
+    		tagV = (int*) malloc(sizeof(tam) * sizeof(int));
 	}
 	
 	s->pc = SRAM_BASE;
