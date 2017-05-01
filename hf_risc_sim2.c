@@ -45,8 +45,8 @@ typedef struct {
 int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
-uint32_t *cache[];
-uint32_t *tagV[];
+int *cache;
+int *tagV;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -59,8 +59,8 @@ static int cache_read(int tag, int linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
-	if(tagV[linha] == tag){
-			return tagV[linha];
+	if(*tagV+linha == tag){
+			return *tagV+linha;
 	}
 	ciclos = ciclos + penal;
 	falhasL1++;
@@ -70,8 +70,8 @@ static int cache_read(int tag, int linha){
 static void cache_write(int tag, int linha, int data){
 	ciclos++;
 	acessosL1++;
-	cache[linha] = data;
-	tagV[linha] = tag;
+	*cache+linha = data;
+	*tagV+linha = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
@@ -122,7 +122,7 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 		default:
 			printf("\nerror");
 	}
-	//cache_write(address/32,address % tam,value);
+	cache_write(address/32,address % tam,value);
 	return(value);
 }
 
@@ -434,8 +434,12 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	cache = malloc(sizeof(int) * tam);
-	tagV = malloc(sizeof(int) * tam);
+	cacheAux[tam];
+	tagAux[tam];
+	memset(cacheAux, 0xff, sizeof(int)*tam);
+	memset(tagAux, 0xff, sizeof(int)*tam);
+	cache = cacheAux;
+	tagV = tagAux;
 
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
