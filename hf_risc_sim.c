@@ -128,8 +128,8 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 static void mem_write(state *s, int32_t size, uint32_t address, uint32_t value){
 	ciclos++;
 	uint32_t ptr, i;
-	
-	uint32_t valor = cache_write(address/32,address % tam,value);
+	int data = value;
+	uint32_t valor = cache_write(address/32,address % tam,data);
 
 	switch(address){
 		case IRQ_VECTOR:	s->vector = value; return;
