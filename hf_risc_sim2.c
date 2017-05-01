@@ -59,7 +59,7 @@ static int cache_read(int tag, int linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
-	if(*(tagV +linha) == tag){
+	if(*(tagV + linha) == tag){
 			return *(tagV + linha);
 	}
 	ciclos = ciclos + penal;
@@ -70,8 +70,8 @@ static int cache_read(int tag, int linha){
 static void cache_write(int tag, int linha, int data){
 	ciclos++;
 	acessosL1++;
-	*(cache + linha) = data;
-	*(tagV + linha) = tag;
+	cache[linha] = data;
+	tagV[linha] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
@@ -434,8 +434,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 	
-	int cacheAux[tam] = {0};
-	int tagAux[tam] = {0};
+	int cacheAux[tam] = NULL;
+	int tagAux[tam] = NULL;
 	cache = *cacheAux[0];
 	tagV = *tagAux[0];
 
