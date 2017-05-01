@@ -45,8 +45,8 @@ typedef struct {
 int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
-int *cache = NULL;
-int *tagV = NULL;
+uint32_t *cache = NULL;
+uint32_t *tagV = NULL;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -56,7 +56,7 @@ int hits = 0;
 FILE *fptr;
 int32_t log_enabled = 0;
 
-static int cache_read(int tag, int linha){
+static uint32_t cache_read(uint32_t tag, uint32_t linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
@@ -69,7 +69,7 @@ static int cache_read(int tag, int linha){
 	return -1;
 }
 
-static void cache_write(int tag, int linha, int data){
+static void cache_write(uint32_t tag, uint32_t linha, uint32_t data){
 	ciclos++;
 	acessosL1++;
 	cache[linha] = data;
@@ -446,14 +446,14 @@ int main(int argc, char *argv[]){
 	//tagV = (int *)malloc(tam * sizeof(int));
 
 	if (cache != 0) {
-    		cache = (int*) realloc(cache, sizeof(tam) * sizeof(int));
+    		cache = (uint32_t*) realloc(cache, sizeof(tam) * sizeof(uint32_t));
 	} else {
-    		cache = (int*) malloc(sizeof(tam) * sizeof(int));
+    		cache = (uint32_t*) malloc(sizeof(tam) * sizeof(int));
 	}
 	if (tagV != 0) {
-    		tagV = (int*) realloc(tagV, sizeof(tam) * sizeof(int));
+    		tagV = (uint32_t*) realloc(tagV, sizeof(tam) * sizeof(uint32_t));
 	} else {
-    		tagV = (int*) malloc(sizeof(tam) * sizeof(int));
+    		tagV = (uint32_t*) malloc(sizeof(tam) * sizeof(uint32_t));
 	}
 	
 	s->pc = SRAM_BASE;
