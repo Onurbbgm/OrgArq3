@@ -58,7 +58,7 @@ int32_t log_enabled = 0;
 static uint32_t cache_read(uint32_t tag, uint32_t linha){
 	ciclos++;
 	acessosL1++;
-	if(&tagV[linha] == tag){
+	if(tagV[linha] == tag){
 			return linha;
 	}
 	ciclos = ciclos + penal;
@@ -69,8 +69,8 @@ static uint32_t cache_read(uint32_t tag, uint32_t linha){
 static void cache_write(uint32_t tag, uint32_t linha, uint32_t data){
 	ciclos++;
 	acessosL1++;
-	&cache[linha] = data;
-	&tagV[linha] = tag;
+	cache[linha] = data;
+	tagV[linha] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
@@ -433,8 +433,11 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	cache = malloc(sizeof(uint32_t) * tam);
-	tagV = malloc(sizeof(uint32_t) * tam);
+	uint32_t cacheAux[tam];
+	uint32_t tagAux[tam];
+	
+	cache = cacheAux;
+	tagV = tagAux;
 
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
