@@ -358,6 +358,15 @@ void cycle(state *s){
 
 int main(int argc, char *argv[]){
 	
+	state context;
+	state *s;
+	FILE *in;
+	int bytes, i;
+	
+	s = &context;
+	memset(s, 0, sizeof(state));
+	memset(sram, 0xff, sizeof(MEM_SIZE));
+	
 	if (argc >= 6){
 		in = fopen(argv[5], "rb");
 		if (in == 0){
@@ -409,17 +418,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	cache = malloc(sizeof(*int) * tam);
-	tagV = malloc(sizeof(*int) * tam);
-	
-	state context;
-	state *s;
-	FILE *in;
-	int bytes, i;
-
-	s = &context;
-	memset(s, 0, sizeof(state));
-	memset(sram, 0xff, sizeof(MEM_SIZE));
+	cache = malloc(sizeof(int) * tam);
+	tagV = malloc(sizeof(int) * tam);
 
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
