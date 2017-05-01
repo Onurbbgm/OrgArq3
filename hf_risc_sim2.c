@@ -59,8 +59,8 @@ static int cache_read(int tag, int linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
-	if(tagV[linha % tam] == tag){
-			return tagV[linha % tam];
+	if(tagV[0] == tag){
+			return cache[0];
 	}
 	ciclos = ciclos + penal;
 	falhasL1++;
@@ -70,8 +70,8 @@ static int cache_read(int tag, int linha){
 static void cache_write(int tag, int linha, int data){
 	ciclos++;
 	acessosL1++;
-	cache[linha % tam] = data;
-	tagV[linha % tam] = tag;
+	cache[0] = data;
+	tagV[0] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
@@ -158,8 +158,10 @@ static void mem_write(state *s, int32_t size, uint32_t address, uint32_t value){
 			printf("div: %d (%f)\n", s->div, (float)s->div / (float)s->ins);
 			printf("other: %d (%f)\n", s->other, (float)s->other / (float)s->ins);
 			printf("\nAcessos L1: %d\n",acessosL1);
-			printf("\nFalhas L1: %d\n",falhasL1);
-			printf("\nCiclos: %d\n",ciclos);
+			printf("Falhas L1: %d\n",falhasL1);
+			printf("Ciclos: %d\n",ciclos);
+			printf("\ntagV[0]: %d\n",tagV[0]);
+			printf("cache[0]: %d\n",cache[0]);
 			exit(0);
 		case DEBUG_ADDR:
 			if (log_enabled)
