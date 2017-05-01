@@ -58,9 +58,8 @@ int32_t log_enabled = 0;
 static int cache_read(uint32_t tag, uint32_t linha){
 	ciclos++;
 	acessosL1++;
-	int i = 0;
-	if(tagV[(linha+asso) % tam] == tag){
-			return (linha+asso) % tam;
+	if(tagV[linha] == tag){
+			return linha;
 	}
 	ciclos = ciclos + penal;
 	falhasL1++;
@@ -70,8 +69,8 @@ static int cache_read(uint32_t tag, uint32_t linha){
 static void cache_write(uint32_t tag, uint32_t linha, uint32_t data){
 	ciclos++;
 	acessosL1++;
-	cache[(linha+asso) % tam] = data;
-	tagV[(linha+asso) % tam] = tag;
+	cache[linha] = data;
+	tagV[linha] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
