@@ -45,9 +45,12 @@ typedef struct {
 int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
-int cache[tam];
-int tag[tam];
+int cache[]*;
+int tag[]*;
 
+int acessosL1 = 0;
+int falhasL1 = 0;
+int ciclos = 0;
 
 FILE *fptr;
 int32_t log_enabled = 0;
@@ -379,6 +382,10 @@ int main(int argc, char *argv[]){
 		printf("\Erro, tam != asso*bloco\n");
 		return 1;
 	}
+	int cacheAux[tam];
+	int TagAux[tam];
+	cache = &cacheAux;
+	tag = &tagAux;
 	
 	state context;
 	state *s;
