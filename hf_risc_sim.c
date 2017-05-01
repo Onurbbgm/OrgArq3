@@ -156,6 +156,9 @@ static void mem_write(state *s, int32_t size, uint32_t address, uint32_t value){
 			printf("mul: %d (%f)\n", s->mul, (float)s->mul / (float)s->ins);
 			printf("div: %d (%f)\n", s->div, (float)s->div / (float)s->ins);
 			printf("other: %d (%f)\n", s->other, (float)s->other / (float)s->ins);
+			printf("\nAcessos L1: %d\n",acessosL1);
+			printf("\nFalhas L1: %d\n",falhasL1);
+			printf("\nCiclos: %d\n",ciclos);
 			exit(0);
 		case DEBUG_ADDR:
 			if (log_enabled)
