@@ -45,8 +45,8 @@ typedef struct {
 int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
-uint32_t *cache;
-uint32_t *tagV;
+int *cache;
+int *tagV;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -433,8 +433,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	uint32_t cacheAux[tam];
-	uint32_t tagAux[tam];
+	int cacheAux[tam];
+	int tagAux[tam];
 	
 	cache = cacheAux;
 	tagV = tagAux;
