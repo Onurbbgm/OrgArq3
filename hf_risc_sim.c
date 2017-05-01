@@ -45,8 +45,8 @@ typedef struct {
 int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
-int8_t *cache;
-int8_t *tagV;
+uint32_t *cache;
+uint32_t *tagV;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -434,8 +434,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	cache = malloc(sizeof(int) * tam);
-	tagV = malloc(sizeof(int) * tam);
+	cache = malloc(sizeof(uint32_t) * tam);
+	tagV = malloc(sizeof(uint32_t) * tam);
 
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
