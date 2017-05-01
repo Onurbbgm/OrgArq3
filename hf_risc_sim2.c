@@ -434,12 +434,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	int cacheAux[tam];
-	int tagAux[tam];
-	memset(cacheAux, 0xff, sizeof(int)*tam);
-	memset(tagAux, 0xff, sizeof(int)*tam);
-	cache = cacheAux;
-	tagV = tagAux;
+	cache = (int *)malloc(tam * sizeof(int));
+	tagV = (int *)malloc(tam * sizeof(int));
 
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
