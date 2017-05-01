@@ -59,8 +59,8 @@ static int cache_read(int tag, int linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
-	if(tagV[0] == tag){	
-		return cache[0];
+	if(tagV[linha] == tag){	
+		return cache[linha];
 	}
 	ciclos = ciclos + penal;
 	falhasL1++;
@@ -70,8 +70,8 @@ static int cache_read(int tag, int linha){
 static void cache_write(int tag, int linha, int data){
 	ciclos++;
 	acessosL1++;
-	cache[0] = data;
-	tagV[0] = tag;
+	cache[linha] = data;
+	tagV[linha] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
@@ -79,6 +79,10 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 	//tagV[0] = 12345;
 	//cache[0] = 55555;
 	uint32_t valor = cache_read(address/32,(address % tam));
+	
+	if(valor != -1){
+		return valor;
+	}
 	
 	uint32_t value=0, ptr;
 
@@ -94,10 +98,8 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 		case UART_READ:		return getchar();
 		case UART_DIVISOR:	return 0;
 	}
-
-	if(valor != -1){
-		ptr = valor;
-	}else ptr = (uint32_t)(intptr_t)s->mem + (address % MEM_SIZE);
+	
+	ptr = (uint32_t)(intptr_t)s->mem + (address % MEM_SIZE);
 
 	switch(size){
 		case 4:
