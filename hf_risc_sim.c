@@ -385,7 +385,7 @@ int main(int argc, char *argv[]){
 	}
 
 	cache = malloc(tam * sizeof(int));
-	tag = malloc(tam * sizeof(int));
+	tagV = malloc(tam * sizeof(int));
 	
 	//memset(cache,0,tam*sizeof(int));
 	//memset(tagV,0,tam*sizeof(int));
