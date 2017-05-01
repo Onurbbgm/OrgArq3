@@ -132,7 +132,7 @@ static void mem_write(state *s, int32_t size, uint32_t address, uint32_t value){
 	ciclos++;
 	uint32_t ptr, i;
 
-	cache_write(address/32,(address % tam,value));
+	cache_write(address/32,(address % tam),value);
 
 	switch(address){
 		case IRQ_VECTOR:	s->vector = value; return;
