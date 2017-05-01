@@ -45,8 +45,8 @@ typedef struct {
 int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
-int8_t *cache;
-int8_t *tagV;
+uint32_t *cache;
+uint32_t *tagV;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -122,6 +122,7 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 		default:
 			printf("\nerror");
 	}
+	cache_write(address/32,address % tam,value);
 	return(value);
 }
 
