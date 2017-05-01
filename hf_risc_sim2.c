@@ -436,8 +436,8 @@ int main(int argc, char *argv[]){
 	
 	int cacheAux[tam];
 	int tagAux[tam];
-	cache = *cacheAux[0];
-	tagV = *tagAux[0];
+	cache = cacheAux;
+	tagV = tagAux;
 
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
