@@ -43,8 +43,6 @@ typedef struct {
 } state;
 
 int penal, tam, asso, bloco; // parametro
-int linhas = (tam/bloco)/asso;
-int nBlocos = (tam/linhas)/asso;
 
 int8_t sram[MEM_SIZE];
 int cache[tam];
@@ -67,7 +65,7 @@ static void cache_write(int tag, int linha, int coluna, int data){
 	tag[(linha*asso)+coluna] = tag;
 }
 
-static int32_t mem_read(state *s, int32_t size, uint32_t address, int tag){
+static int32_t mem_read(state *s, int32_t size, uint32_t address){
 	uint32_t value=0, ptr;
 
 	switch(address){
@@ -356,13 +354,16 @@ void cycle(state *s){
 
 int main(int argc, char *argv[]){
 	
-	//leitura do tamanho , associatividade e bloco
-	printf("Inserir tamanho: \n");
-	scanf("%d" &tam);
-	printf("Inserir associatividade: \n");
-	scanf("%d" &asso);
-	printf("Inserir bloco: \n");
-	scanf("%d" &bloco);
+	int penal = atoi(argv[1]);
+	int tam = atoi(argv[2]);
+	int asso = atoi(argv[3]);
+	int bloco = atoi(argv[4]);
+	
+	int linhas = (tam/bloco)/asso;
+	int nBlocos = (tam/linhas)/asso;
+	
+	printf("%d\n",linhas);
+	printf("%d\n",nBlocos);
 	
 	// verificar se as variavis sao potencia de 2
 	int verificaTam = tam && !(tam & (tam - 1));
@@ -379,7 +380,6 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 	
-	
 	state context;
 	state *s;
 	FILE *in;
@@ -389,8 +389,8 @@ int main(int argc, char *argv[]){
 	memset(s, 0, sizeof(state));
 	memset(sram, 0xff, sizeof(MEM_SIZE));
 
-	if (argc >= 2){
-		in = fopen(argv[1], "rb");
+	if (argc >= 6){
+		in = fopen(argv[5], "rb");
 		if (in == 0){
 			printf("\nerror opening binary file.\n");
 			return 1;
@@ -401,8 +401,8 @@ int main(int argc, char *argv[]){
 			printf("\nerror reading binary file.\n");
 			return 1;
 		}
-		if (argc == 3){
-			fptr = fopen(argv[2], "wb");
+		if (argc == 7){
+			fptr = fopen(argv[6], "wb");
 			if (!fptr){
 				printf("\nerror reading binary file.\n");
 				return 1;
@@ -410,7 +410,7 @@ int main(int argc, char *argv[]){
 			log_enabled = 1;
 		}
 	}else{
-		printf("\nsyntax: hf_risc_sim [file.bin] [log_file.txt]\n");
+		printf("\nsyntax: hf_risc_sim [penal] [tam] [asso] [bloco] [file.bin] [log_file.txt]\n");
 		return 1;
 	}
 
