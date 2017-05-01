@@ -433,11 +433,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	int cacheAux[tam];
-	int tagAux[tam];
-	
-	cache = cacheAux;
-	tagV = tagAux;
+	cache = malloc(sizeof(int) * tam);
+	tagV = malloc(sizeof(int) * tam);
 
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
