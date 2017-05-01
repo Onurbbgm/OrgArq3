@@ -59,8 +59,8 @@ static int cache_read(int tag, int linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
-	if(tagV[0] == tag){	
-		//return cache[0];
+	if(tagV[linha] == tag){	
+		return cache[linha];
 	}
 	ciclos = ciclos + penal;
 	falhasL1++;
@@ -70,15 +70,15 @@ static int cache_read(int tag, int linha){
 static void cache_write(int tag, int linha, int data){
 	ciclos++;
 	acessosL1++;
-	//cache[0] = data;
-	//tagV[0] = tag;
+	cache[linha] = data;
+	tagV[linha] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
 	ciclos++;
-	tagV[0] = 12345;
-	cache[0] = 55555;
-	uint32_t valor = cache_read(address/32,address % tam);
+	//tagV[0] = 12345;
+	//cache[0] = 55555;
+	uint32_t valor = cache_read(address/32,(address % tam));
 	
 	uint32_t value=0, ptr;
 
@@ -124,7 +124,7 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 		default:
 			printf("\nerror");
 	}
-	cache_write(address/32,address % tam,value);
+	cache_write(address/32,(address % tam),value);
 	return(value);
 }
 
@@ -132,7 +132,7 @@ static void mem_write(state *s, int32_t size, uint32_t address, uint32_t value){
 	ciclos++;
 	uint32_t ptr, i;
 
-	cache_write(address/32,address % tam,value);
+	cache_write(address/32,(address % tam,value));
 
 	switch(address){
 		case IRQ_VECTOR:	s->vector = value; return;
@@ -449,9 +449,9 @@ int main(int argc, char *argv[]){
     		cache = (int*) malloc(tam * sizeof(int));
 	}
 	if (tagV != 0) {
-    		tagV = (int*) realloc(tagV, tam * sizeof(int));
+    		tagV = (int*) realloc(tagV, sizeof(tam));
 	} else {
-    		tagV = (int*) malloc(tam * sizeof(int));
+    		tagV = (int*) malloc(sizeof(tam));
 	}
 	
 	s->pc = SRAM_BASE;
