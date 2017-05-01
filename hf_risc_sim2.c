@@ -122,7 +122,7 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 		default:
 			printf("\nerror");
 	}
-	cache_write(address/32,address % tam,value);
+	//cache_write(address/32,address % tam,value);
 	return(value);
 }
 
