@@ -433,9 +433,11 @@ int main(int argc, char *argv[]){
 		printf("\Erro, tam != linhas*asso*bloco\n");
 		return 1;
 	}
-
-	cache = (int *)malloc(tam * sizeof(int));
-	tagV = (int *)malloc(tam * sizeof(int));
+	
+	int cacheAux[tam] = {0};
+	int tagAux[tam] = {0};
+	cache = *cacheAux[0];
+	tagV = *tagAux[0];
 
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
