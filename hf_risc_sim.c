@@ -59,7 +59,7 @@ static int cache_read(int tag, int linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
-	if(tagV[(linha+asso) % tam)] == tag)
+	if(tagV[(linha+asso) % tam] == tag){
 			return (linha+asso) % tam;
 	}
 	ciclos = ciclos + penal;
