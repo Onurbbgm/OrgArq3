@@ -47,7 +47,6 @@ int penal, tam, asso, bloco; // parametro
 int8_t sram[MEM_SIZE];
 int *cache;
 int *tagV;
-int *penal;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -395,11 +394,10 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 	
-	penal = malloc(sizeof(int));
 	penal = atoi(argv[1]);
-	int tam = atoi(argv[2]);
-	int asso = atoi(argv[3]);
-	int bloco = atoi(argv[4]);
+	tam = atoi(argv[2]);
+	asso = atoi(argv[3]);
+	bloco = atoi(argv[4]);
 	
 	int linhas = (tam/bloco)/asso;
 	int nBlocos = (tam/linhas)/asso;
