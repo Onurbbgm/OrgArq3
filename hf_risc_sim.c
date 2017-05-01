@@ -45,8 +45,8 @@ typedef struct {
 int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
-int *cache;
-int *tagV;
+int8_t *cache;
+int8_t *tagV;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -55,7 +55,7 @@ int ciclos = 0;
 FILE *fptr;
 int32_t log_enabled = 0;
 
-static int cache_read(int tag, int linha){
+static int cache_read(uint32_t tag, uint32_t linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
@@ -67,7 +67,7 @@ static int cache_read(int tag, int linha){
 	return -1;
 }
 
-static void cache_write(int tag, int linha, int data){
+static void cache_write(uint32_t tag, uint32_t linha, uint32_t data){
 	ciclos++;
 	acessosL1++;
 	cache[(linha+asso) % tam] = data;
@@ -76,7 +76,7 @@ static void cache_write(int tag, int linha, int data){
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
 	ciclos++;
-	int valor = cache_read(address/32,address % tam);
+	uint32_t valor = cache_read(address/32,address % tam);
 	
 	uint32_t value=0, ptr;
 
@@ -129,7 +129,7 @@ static void mem_write(state *s, int32_t size, uint32_t address, uint32_t value){
 	ciclos++;
 	uint32_t ptr, i;
 	
-	int valor = cache_write(address/32,address % tam,value);
+	uint32_t valor = cache_write(address/32,address % tam,value);
 
 	switch(address){
 		case IRQ_VECTOR:	s->vector = value; return;
