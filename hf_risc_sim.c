@@ -409,11 +409,11 @@ int main(int argc, char *argv[]){
 	asso = atoi(argv[3]);
 	bloco = atoi(argv[4]);
 	
-	int linhas = (tam/bloco)/asso;
-	int nBlocos = (tam/linhas)/asso;
+	int linhas = tam/(bloco*asso);
+
 	
 	printf("%d\n",linhas);
-	printf("%d\n",nBlocos);
+	
 	
 	// verificar se as variavis sao potencia de 2
 	int verificaTam = tam && !(tam & (tam - 1));
@@ -425,8 +425,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 	
-	if(tam != asso*bloco){
-		printf("\Erro, tam != asso*bloco\n");
+	if(tam != linhas*asso*bloco){
+		printf("\Erro, tam != linhas*asso*bloco\n");
 		return 1;
 	}
 
