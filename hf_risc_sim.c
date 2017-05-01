@@ -59,19 +59,25 @@ static int cache_read(int tag, int linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
-	for(i = 0; i<asso; i++){
-		if(tagV[(linha*asso)+i] == tag)
-			return (linha*asso)+1;
+	if(tagV[(linha+asso) % tam)] == tag)
+			return (linha+asso) % tam;
 	}
+	ciclos = ciclos + penal;
+	falhasL1++;
 	return -1;
 }
 
-static void cache_write(int tag, int linha, int coluna, int data){
-	cache[(linha*asso)+coluna] = data;
-	tagV[(linha*asso)+coluna] = tag;
+static void cache_write(int tag, int linha, int data){
+	ciclos++;
+	acessosL1++;
+	cache[(linha+asso) % tam] = data;
+	tagV[(linha+asso) % tam] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
+	ciclos++;
+	int valor = cache_read(address/32,address % tam);
+	
 	uint32_t value=0, ptr;
 
 	switch(address){
@@ -87,7 +93,9 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 		case UART_DIVISOR:	return 0;
 	}
 
-	ptr = (uint32_t)(intptr_t)s->mem + (address % MEM_SIZE);
+	if(valor != -1){
+		ptr = valor;
+	}else ptr = (uint32_t)(intptr_t)s->mem + (address % MEM_SIZE);
 
 	switch(size){
 		case 4:
@@ -114,12 +122,14 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 		default:
 			printf("\nerror");
 	}
-
 	return(value);
 }
 
 static void mem_write(state *s, int32_t size, uint32_t address, uint32_t value){
+	ciclos++;
 	uint32_t ptr, i;
+	
+	//int valor = cache_write(address/32,address % tam,value);
 
 	switch(address){
 		case IRQ_VECTOR:	s->vector = value; return;
