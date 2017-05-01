@@ -45,8 +45,8 @@ typedef struct {
 int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
-int * cache;
-int * tagV;
+int *cache;
+int *tagV;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -358,6 +358,31 @@ void cycle(state *s){
 
 int main(int argc, char *argv[]){
 	
+	if (argc >= 6){
+		in = fopen(argv[5], "rb");
+		if (in == 0){
+			printf("\nerror opening binary file.\n");
+			return 1;
+		}
+		bytes = fread(&sram, 1, MEM_SIZE, in);
+		fclose(in);
+		if (bytes == 0){
+			printf("\nerror reading binary file.\n");
+			return 1;
+		}
+		if (argc == 7){
+			fptr = fopen(argv[6], "wb");
+			if (!fptr){
+				printf("\nerror reading binary file.\n");
+				return 1;
+			}
+			log_enabled = 1;
+		}
+	}else{
+		printf("\nsyntax: hf_risc_sim [penal] [tam] [asso] [bloco] [file.bin] [log_file.txt]\n");
+		return 1;
+	}
+	
 	int penal = atoi(argv[1]);
 	int tam = atoi(argv[2]);
 	int asso = atoi(argv[3]);
@@ -384,11 +409,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	cache = malloc(sizeof(tam));
-	tagV = malloc(sizeof(tam));
-	
-	//memset(cache,0,tam*sizeof(*int));
-	//memset(tagV,0,tam*sizeof(*int));
+	cache = malloc(sizeof(*int) * tam);
+	tagV = malloc(sizeof(*int) * tam);
 	
 	state context;
 	state *s;
@@ -398,31 +420,6 @@ int main(int argc, char *argv[]){
 	s = &context;
 	memset(s, 0, sizeof(state));
 	memset(sram, 0xff, sizeof(MEM_SIZE));
-
-	if (argc >= 6){
-		in = fopen(argv[5], "rb");
-		if (in == 0){
-			printf("\nerror opening binary file.\n");
-			return 1;
-		}
-		bytes = fread(&sram, 1, MEM_SIZE, in);
-		fclose(in);
-		if (bytes == 0){
-			printf("\nerror reading binary file.\n");
-			return 1;
-		}
-		if (argc == 7){
-			fptr = fopen(argv[6], "wb");
-			if (!fptr){
-				printf("\nerror reading binary file.\n");
-				return 1;
-			}
-			log_enabled = 1;
-		}
-	}else{
-		printf("\nsyntax: hf_risc_sim [penal] [tam] [asso] [bloco] [file.bin] [log_file.txt]\n");
-		return 1;
-	}
 
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
