@@ -434,8 +434,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 	
-	int cacheAux[tam] = NULL;
-	int tagAux[tam] = NULL;
+	int cacheAux[tam];
+	int tagAux[tam];
 	cache = *cacheAux[0];
 	tagV = *tagAux[0];
 
