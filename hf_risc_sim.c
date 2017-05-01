@@ -45,8 +45,8 @@ typedef struct {
 int penal, tam, asso, bloco; // parametro
 
 int8_t sram[MEM_SIZE];
-int * cache;
-int * tagV;
+int * cache = null;
+int * tagV = null;
 
 int acessosL1 = 0;
 int falhasL1 = 0;
@@ -58,15 +58,15 @@ int32_t log_enabled = 0;
 static int cache_read(int tag, int linha){
 	int i = 0;
 	for(i = 0; i<asso; i++){
-		if(&tagV[(linha*asso)+i] == tag)
+		if(tagV[(linha*asso)+i] == tag)
 			return (linha*asso)+1;
 	}
 	return -1;
 }
 
 static void cache_write(int tag, int linha, int coluna, int data){
-	&cache[(linha*asso)+coluna] = data;
-	&tagV[(linha*asso)+coluna] = tag;
+	cache[(linha*asso)+coluna] = data;
+	tagV[(linha*asso)+coluna] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
@@ -384,8 +384,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	cache = malloc(tam * sizeof(int));
-	tagV = malloc(tam * sizeof(int));
+	cache = malloc(sizeof(tam));
+	tagV = malloc(sizeof(tam));
 	
 	//memset(cache,0,tam*sizeof(*int));
 	//memset(tagV,0,tam*sizeof(*int));
