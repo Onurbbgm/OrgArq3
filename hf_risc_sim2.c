@@ -59,8 +59,7 @@ static int cache_read(int tag, int linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
-	if(tagV[0] == tag){
-		tagV[0] = 12345;	
+	if(tagV[0] == tag){	
 		//return cache[0];
 	}
 	ciclos = ciclos + penal;
@@ -77,6 +76,8 @@ static void cache_write(int tag, int linha, int data){
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
 	ciclos++;
+	tagV[0] = 12345;
+	cache[0] = 55555;
 	uint32_t valor = cache_read(address/32,address % tam);
 	
 	uint32_t value=0, ptr;
