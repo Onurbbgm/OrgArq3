@@ -51,6 +51,7 @@ int *tagV = NULL;
 int acessosL1 = 0;
 int falhasL1 = 0;
 int ciclos = 0;
+int hits = 0;
 
 FILE *fptr;
 int32_t log_enabled = 0;
@@ -60,6 +61,7 @@ static int cache_read(int tag, int linha){
 	acessosL1++;
 	int i = 0;
 	if(tagV[linha] == tag){	
+		hits++;
 		return cache[linha];
 	}
 	ciclos = ciclos + penal;
@@ -79,10 +81,6 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 	//tagV[0] = 12345;
 	//cache[0] = 55555;
 	uint32_t valor = cache_read(address/32,(address % tam));
-	
-	if(valor != -1){
-		return valor;
-	}
 	
 	uint32_t value=0, ptr;
 
@@ -164,8 +162,8 @@ static void mem_write(state *s, int32_t size, uint32_t address, uint32_t value){
 			printf("\nAcessos L1: %d\n",acessosL1);
 			printf("Falhas L1: %d\n",falhasL1);
 			printf("Ciclos: %d\n",ciclos);
-			printf("\ntagV[0]: %d\n",tagV[0]);
-			printf("cache[0]: %d\n",cache[0]);
+			printf("Hits: %d\n",hits);
+			//printf("cache[0]: %d\n",cache[0]);
 			exit(0);
 		case DEBUG_ADDR:
 			if (log_enabled)
