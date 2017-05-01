@@ -55,7 +55,7 @@ int ciclos = 0;
 FILE *fptr;
 int32_t log_enabled = 0;
 
-static int cache_read(uint32_t tag, uint32_t linha){
+static int cache_read(int tag, int linha){
 	ciclos++;
 	acessosL1++;
 	int i = 0;
@@ -67,7 +67,7 @@ static int cache_read(uint32_t tag, uint32_t linha){
 	return -1;
 }
 
-static void cache_write(uint32_t tag, uint32_t linha, uint32_t data){
+static void cache_write(int tag, int linha, int data){
 	ciclos++;
 	acessosL1++;
 	cache[linha] = data;
