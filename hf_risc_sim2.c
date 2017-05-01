@@ -438,9 +438,20 @@ int main(int argc, char *argv[]){
 	
 	//int cacheAux[tam];
 	//int tagAux[tam];
-	cache = (int *)malloc(tam * sizeof(int));
-	tagV = (int *)malloc(tam * sizeof(int));
+	//cache = (int *)malloc(tam * sizeof(int));
+	//tagV = (int *)malloc(tam * sizeof(int));
 
+	if (cache != 0) {
+    		cache = (int*) realloc(cache, tam * sizeof(int));
+	} else {
+    		cache = (int*) malloc(tam * sizeof(int));
+	}
+	if (tagV != 0) {
+    		tagV = (int*) realloc(tagV, tam * sizeof(int));
+	} else {
+    		tagV = (int*) malloc(tam * sizeof(int));
+	}
+	
 	s->pc = SRAM_BASE;
 	s->pc_next = s->pc + 4;
 	s->mem = &sram[0];
