@@ -87,7 +87,7 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 	if(index > tam){
 		index = 0;
 	}
-	uint32_t valor = cache_read(address/32,index);
+	uint32_t valor = cache_read((address % asso),index);
 	
 	uint32_t value=0, ptr;
 
@@ -132,7 +132,7 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 			printf("\nerror");
 	}
 	if(valor == -1){
-		cache_write(address/32,index,value);
+		cache_write((address % asso),index,value);
 	}
 	return(value);
 }
@@ -145,7 +145,7 @@ static void mem_write(state *s, int32_t size, uint32_t address, uint32_t value){
 	if(index > tam){
 		index = 0;
 	}
-	cache_write(address/32,index,value);
+	cache_write((address % asso),index,value);
 
 	switch(address){
 		case IRQ_VECTOR:	s->vector = value; return;
@@ -434,7 +434,6 @@ int main(int argc, char *argv[]){
 	int tamArray = linhas*asso;
 	
 	printf("%d\n",linhas);
-	
 	
 	// verificar se as variavis sao potencia de 2
 	int verificaTam = tam && !(tam & (tam - 1));
