@@ -82,7 +82,7 @@ static void cache_write(uint32_t tag, uint32_t index, uint32_t data){
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
 	ciclos++;
-	int index = (address % tam);
+	uint32_t index = (address % tam);
 	if(index > tam){
 		index = 0;
 	}
@@ -140,7 +140,11 @@ static void mem_write(state *s, int32_t size, uint32_t address, uint32_t value){
 	ciclos++;
 	uint32_t ptr, i;
 
-	cache_write(address/32,(address % tam),value);
+	uint32_t index = (address % tam);
+	if(index > tam){
+		index = 0;
+	}
+	cache_write(address/32,index,value);
 
 	switch(address){
 		case IRQ_VECTOR:	s->vector = value; return;
