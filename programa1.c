@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <hf-risc.h>
 
 void quickSort(int lista[100], int comeco, int fim);
 #define N 100
@@ -11,7 +12,6 @@ int main(int argc , char * argv []){
 	for(i = 0; i<N; i++){
 		lista[i] = rand()%100;	
 	}
-	//printf("%d\n",callQuick(lista));
 	printf("\nLista nao organizada: ");	
 	int l;
 	for(l = 0; l<N; l++){
