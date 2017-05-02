@@ -59,28 +59,34 @@ int32_t log_enabled = 0;
 static uint32_t cache_read(uint32_t tag, uint32_t linha){
 	ciclos++;
 	acessosL1++;
+	if(linha > (tam-asso)){
+		linha = 0;
+	}
 	int i = 0;
-	if(tagV[linha] == tag){	
-		hits++;
-		return cache[linha];
+	for(i = 0; i < asso; i++){
+		if(tagV[linha+i] == tag){	
+			hits++;
+			return cache[linha+i];
 	}
 	ciclos = ciclos + penal;
 	falhasL1++;
 	return -1;
 }
 
-static void cache_write(uint32_t tag, uint32_t linha, uint32_t data){
+static void cache_write(uint32_t tag, uint32_t index, uint32_t data){
 	ciclos++;
 	acessosL1++;
-	cache[linha] = data;
-	tagV[linha] = tag;
+	cache[index] = data;
+	tagV[index] = tag;
 }
 
 static int32_t mem_read(state *s, int32_t size, uint32_t address){
 	ciclos++;
-	//tagV[0] = 12345;
-	//cache[0] = 55555;
-	uint32_t valor = cache_read(address/32,(address % tam));
+	int index = (address % tam);
+	if(index > tam){
+		index = 0;
+	}
+	uint32_t valor = cache_read(address/32,index);
 	
 	uint32_t value=0, ptr;
 
@@ -125,7 +131,7 @@ static int32_t mem_read(state *s, int32_t size, uint32_t address){
 			printf("\nerror");
 	}
 	if(valor == -1){
-		cache_write(address/32,(address % tam),value);
+		cache_write(address/32,index,value);
 	}
 	return(value);
 }
@@ -420,7 +426,7 @@ int main(int argc, char *argv[]){
 	bloco = atoi(argv[4]);
 	
 	int linhas = tam/(bloco*asso);
-
+	int tamArray = linhas*asso;
 	
 	printf("%d\n",linhas);
 	
@@ -446,14 +452,14 @@ int main(int argc, char *argv[]){
 	//tagV = (int *)malloc(tam * sizeof(int));
 
 	if (cache != 0) {
-    		cache = (uint32_t*) realloc(cache, sizeof(tam) * sizeof(uint32_t));
+    		cache = (uint32_t*) realloc(cache, tamArray * sizeof(uint32_t));
 	} else {
-    		cache = (uint32_t*) malloc(sizeof(tam) * sizeof(int));
+    		cache = (uint32_t*) malloc(tamArray * sizeof(uint32_t));
 	}
 	if (tagV != 0) {
-    		tagV = (uint32_t*) realloc(tagV, sizeof(tam) * sizeof(uint32_t));
+    		tagV = (uint32_t*) realloc(tagV, tamArray * sizeof(uint32_t));
 	} else {
-    		tagV = (uint32_t*) malloc(sizeof(tam) * sizeof(uint32_t));
+    		tagV = (uint32_t*) malloc(tamArray * sizeof(uint32_t));
 	}
 	
 	s->pc = SRAM_BASE;
