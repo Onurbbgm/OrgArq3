@@ -67,6 +67,7 @@ static uint32_t cache_read(uint32_t tag, uint32_t linha){
 		if(tagV[linha+i] == tag){	
 			hits++;
 			return cache[linha+i];
+		}
 	}
 	ciclos = ciclos + penal;
 	falhasL1++;
