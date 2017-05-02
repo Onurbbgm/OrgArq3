@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <hf-risc.h>
 
 void quickSort(int lista[100], int comeco, int fim);
@@ -8,7 +7,7 @@ void quickSort(int lista[100], int comeco, int fim);
 int main(int argc , char * argv []){
 	int i;
 	int lista[100];
-	srand(time(NULL));
+	srand(getpid());
 	for(i = 0; i<N; i++){
 		lista[i] = rand()%100;	
 	}
