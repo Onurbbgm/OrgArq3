@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <hf-risc.h>
 
 void quickSort(int lista[100], int comeco, int fim);
@@ -7,9 +5,8 @@ void quickSort(int lista[100], int comeco, int fim);
 int main(int argc , char * argv []){
 	int i;
 	int lista[100];
-	srand(getpid());
 	for(i = 0; i<N; i++){
-		lista[i] = rand()%100;	
+		lista[i] = random()%100;	
 	}
 	printf("\nLista nao organizada: ");	
 	int l;
